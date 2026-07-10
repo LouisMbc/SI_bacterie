@@ -84,7 +84,7 @@ locust -f perf/locustfile.py --host=http://localhost:5000 \
 
 ## 7. Construire et déployer
 
-    ```bash
+```bash
 python -m grpc_tools.protoc -I proto --python_out=common --grpc_python_out=common \
     proto/bacterie.proto proto/state_store.proto
 
@@ -107,7 +107,6 @@ kubectl apply -f k8s/42-grafana.yaml
 
 kubectl -n bacterie get pods
 ```
-
 Accès (via `kubectl -n bacterie port-forward svc/<nom> <port>:<port>`) :
 webapp `:5000` · prometheus `:9090` · grafana `:3000`.
 
