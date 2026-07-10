@@ -84,7 +84,7 @@ locust -f perf/locustfile.py --host=http://localhost:5000 \
 
 ## 7. Construire et déployer
 
-```bash
+    ```bash
 python -m grpc_tools.protoc -I proto --python_out=common --grpc_python_out=common \
     proto/bacterie.proto proto/state_store.proto
 
@@ -113,6 +113,7 @@ webapp `:5000` · prometheus `:9090` · grafana `:3000`.
 
 ## 8. Structure du dépôt
 
+```bash
 proto/            .proto (contrats gRPC)
 common/           logique métier + stubs générés + serveur générique des 4 états
 services/         Dockerfile générique des pods d'état
@@ -120,6 +121,7 @@ state-manager/    persistance Redis + jauge Prometheus (Evolution)
 webapp/           page web = client gRPC (Flask)
 k8s/              manifests Kubernetes
 perf/             test de charge Locust
+```
 
 ## 9. Limites connues
 
