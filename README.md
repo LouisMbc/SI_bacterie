@@ -12,7 +12,7 @@ Chaque pod d'état :
 - applique **sa propre règle** (voir `common/logique_etats.py`) ;
 - renvoie le nouveau volume + la liste des états joignables depuis lui ;
 - incrémente un compteur Prometheus `etat_traversee_total{etat=...}` à
-  chaque appel (nombre de fois où il a été traversé, exigé par l'énoncé).
+  chaque appel (nombre de fois où il a été traversé).
 
 Les 4 pods partagent **la même image Docker** (`services/Dockerfile`) : le
 code métier est factorisé dans `common/logique_etats.py`, seule la
