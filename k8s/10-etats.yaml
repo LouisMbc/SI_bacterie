@@ -1,0 +1,140 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stable
+  namespace: bacterie
+  labels: {app: stable}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: stable}
+  template:
+    metadata:
+      labels: {app: stable}
+    spec:
+      containers:
+        - name: stable
+          image: bacterie-etat:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: ETAT, value: "stable"}
+          ports:
+            - {containerPort: 50051, name: grpc}
+            - {containerPort: 8000, name: metrics}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stable
+  namespace: bacterie
+spec:
+  selector: {app: stable}
+  ports:
+    - {name: grpc, port: 50051, targetPort: 50051}
+    - {name: metrics, port: 8000, targetPort: 8000}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hypertrophie
+  namespace: bacterie
+  labels: {app: hypertrophie}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: hypertrophie}
+  template:
+    metadata:
+      labels: {app: hypertrophie}
+    spec:
+      containers:
+        - name: hypertrophie
+          image: bacterie-etat:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: ETAT, value: "hypertrophie"}
+          ports:
+            - {containerPort: 50051, name: grpc}
+            - {containerPort: 8000, name: metrics}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hypertrophie
+  namespace: bacterie
+spec:
+  selector: {app: hypertrophie}
+  ports:
+    - {name: grpc, port: 50051, targetPort: 50051}
+    - {name: metrics, port: 8000, targetPort: 8000}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: atrophie
+  namespace: bacterie
+  labels: {app: atrophie}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: atrophie}
+  template:
+    metadata:
+      labels: {app: atrophie}
+    spec:
+      containers:
+        - name: atrophie
+          image: bacterie-etat:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: ETAT, value: "atrophie"}
+          ports:
+            - {containerPort: 50051, name: grpc}
+            - {containerPort: 8000, name: metrics}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: atrophie
+  namespace: bacterie
+spec:
+  selector: {app: atrophie}
+  ports:
+    - {name: grpc, port: 50051, targetPort: 50051}
+    - {name: metrics, port: 8000, targetPort: 8000}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: impasse
+  namespace: bacterie
+  labels: {app: impasse}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: impasse}
+  template:
+    metadata:
+      labels: {app: impasse}
+    spec:
+      containers:
+        - name: impasse
+          image: bacterie-etat:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: ETAT, value: "impasse"}
+          ports:
+            - {containerPort: 50051, name: grpc}
+            - {containerPort: 8000, name: metrics}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: impasse
+  namespace: bacterie
+spec:
+  selector: {app: impasse}
+  ports:
+    - {name: grpc, port: 50051, targetPort: 50051}
+    - {name: metrics, port: 8000, targetPort: 8000}
