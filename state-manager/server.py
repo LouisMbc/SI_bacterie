@@ -79,6 +79,18 @@ class StateStoreServicer(state_store_pb2_grpc.StateStoreServicer):
         compteurs = _recalculer_jauge()
         return state_store_pb2.Comptes(par_etat=compteurs)
 
+    def Lister(self, request, context):
+            situations = []
+            for cle in r.scan_iter("bacterie:*"):
+                data = r.hgetall(cle)
+                bacterie_id = cle.split(":", 1)[1]
+                situations.append(state_store_pb2.Situation(
+                    bacterie_id=bacterie_id,
+                    etat=data["etat"],
+                    volume=float(data["volume"]),
+                    last_transition_epoch=int(data["last_transition_epoch"]),
+                ))
+            return state_store_pb2.ListeSituations(situations=situations)
 
 def serve():
     start_http_server(METRICS_PORT)

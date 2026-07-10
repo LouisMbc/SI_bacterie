@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11state_store.proto\x12\nstatestore\"\x06\n\x04Vide\"\"\n\x0bLireRequest\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\"a\n\rEcrireRequest\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\x12\x0c\n\x04\x65tat\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\x1d\n\x15last_transition_epoch\x18\x04 \x01(\x03\"]\n\tSituation\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\x12\x0c\n\x04\x65tat\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\x1d\n\x15last_transition_epoch\x18\x04 \x01(\x03\"m\n\x07\x43omptes\x12\x32\n\x08par_etat\x18\x01 \x03(\x0b\x32 .statestore.Comptes.ParEtatEntry\x1a.\n\x0cParEtatEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\x32\xb9\x01\n\nStateStore\x12\x36\n\x04Lire\x12\x17.statestore.LireRequest\x1a\x15.statestore.Situation\x12:\n\x06\x45\x63rire\x12\x19.statestore.EcrireRequest\x1a\x15.statestore.Situation\x12\x37\n\x0e\x43ompterParEtat\x12\x10.statestore.Vide\x1a\x13.statestore.Comptesb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11state_store.proto\x12\nstatestore\"\x06\n\x04Vide\"\"\n\x0bLireRequest\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\"a\n\rEcrireRequest\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\x12\x0c\n\x04\x65tat\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\x1d\n\x15last_transition_epoch\x18\x04 \x01(\x03\"]\n\tSituation\x12\x13\n\x0b\x62\x61\x63terie_id\x18\x01 \x01(\t\x12\x0c\n\x04\x65tat\x18\x02 \x01(\t\x12\x0e\n\x06volume\x18\x03 \x01(\x01\x12\x1d\n\x15last_transition_epoch\x18\x04 \x01(\x03\"m\n\x07\x43omptes\x12\x32\n\x08par_etat\x18\x01 \x03(\x0b\x32 .statestore.Comptes.ParEtatEntry\x1a.\n\x0cParEtatEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\x05:\x02\x38\x01\"<\n\x0fListeSituations\x12)\n\nsituations\x18\x01 \x03(\x0b\x32\x15.statestore.Situation2\xf2\x01\n\nStateStore\x12\x36\n\x04Lire\x12\x17.statestore.LireRequest\x1a\x15.statestore.Situation\x12:\n\x06\x45\x63rire\x12\x19.statestore.EcrireRequest\x1a\x15.statestore.Situation\x12\x37\n\x0e\x43ompterParEtat\x12\x10.statestore.Vide\x1a\x13.statestore.Comptes\x12\x37\n\x06Lister\x12\x10.statestore.Vide\x1a\x1b.statestore.ListeSituationsb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -45,6 +45,8 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_COMPTES']._serialized_end=380
   _globals['_COMPTES_PARETATENTRY']._serialized_start=334
   _globals['_COMPTES_PARETATENTRY']._serialized_end=380
-  _globals['_STATESTORE']._serialized_start=383
-  _globals['_STATESTORE']._serialized_end=568
+  _globals['_LISTESITUATIONS']._serialized_start=382
+  _globals['_LISTESITUATIONS']._serialized_end=442
+  _globals['_STATESTORE']._serialized_start=445
+  _globals['_STATESTORE']._serialized_end=687
 # @@protoc_insertion_point(module_scope)

@@ -2,16 +2,25 @@
 <html lang="fr">
 <head><meta charset="utf-8"><title>Bactérie</title></head>
 <body>
-  <h1>Etat de la bactérie</h1>
+  <h1>Ma bactérie (id: <span id="mon-id">-</span>)</h1>
   <p>Etat courant : <strong id="etat">-</strong></p>
   <p>Volume : <strong id="volume">-</strong> m3</p>
   <h2>Transitions possibles</h2>
   <div id="boutons"></div>
+
+  <hr>
+  <h2>Toutes les bactéries du cluster</h2>
+  <table border="1" cellpadding="5">
+    <thead><tr><th>id</th><th>état</th><th>volume</th></tr></thead>
+    <tbody id="table-bacteries"></tbody>
+  </table>
+
 <script>
 async function rafraichir() {
   const res = await fetch('/api/etat');
   const data = await res.json();
   if (data.erreur) { document.getElementById('etat').innerText = 'ERREUR: ' + data.erreur; return; }
+  document.getElementById('mon-id').innerText = data.bacterie_id;
   document.getElementById('etat').innerText = data.etat;
   document.getElementById('volume').innerText = data.volume;
   const zone = document.getElementById('boutons');
@@ -23,7 +32,23 @@ async function rafraichir() {
     btn.onclick = () => transitionner(e);
     zone.appendChild(btn);
   });
+  rafraichirToutes();
 }
+
+async function rafraichirToutes() {
+  const res = await fetch('/api/toutes');
+  const data = await res.json();
+  const tbody = document.getElementById('table-bacteries');
+  tbody.innerHTML = '';
+  if (data.bacteries) {
+    data.bacteries.forEach(b => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${b.id}</td><td>${b.etat}</td><td>${b.volume}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+}
+
 async function transitionner(cible) {
   const res = await fetch('/api/transition', {
     method: 'POST', headers: {'Content-Type': 'application/json'},

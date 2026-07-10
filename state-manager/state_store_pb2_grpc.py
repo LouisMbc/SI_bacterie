@@ -49,6 +49,11 @@ class StateStoreStub:
                 request_serializer=state__store__pb2.Vide.SerializeToString,
                 response_deserializer=state__store__pb2.Comptes.FromString,
                 _registered_method=True)
+        self.Lister = channel.unary_unary(
+                '/statestore.StateStore/Lister',
+                request_serializer=state__store__pb2.Vide.SerializeToString,
+                response_deserializer=state__store__pb2.ListeSituations.FromString,
+                _registered_method=True)
 
 
 class StateStoreServicer:
@@ -72,6 +77,12 @@ class StateStoreServicer:
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Lister(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_StateStoreServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -89,6 +100,11 @@ def add_StateStoreServicer_to_server(servicer, server):
                     servicer.CompterParEtat,
                     request_deserializer=state__store__pb2.Vide.FromString,
                     response_serializer=state__store__pb2.Comptes.SerializeToString,
+            ),
+            'Lister': grpc.unary_unary_rpc_method_handler(
+                    servicer.Lister,
+                    request_deserializer=state__store__pb2.Vide.FromString,
+                    response_serializer=state__store__pb2.ListeSituations.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -172,6 +188,33 @@ class StateStore:
             '/statestore.StateStore/CompterParEtat',
             state__store__pb2.Vide.SerializeToString,
             state__store__pb2.Comptes.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def Lister(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/statestore.StateStore/Lister',
+            state__store__pb2.Vide.SerializeToString,
+            state__store__pb2.ListeSituations.FromString,
             options,
             channel_credentials,
             insecure,

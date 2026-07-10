@@ -5,6 +5,7 @@ service StateStore {
   rpc Lire (LireRequest) returns (Situation);
   rpc Ecrire (EcrireRequest) returns (Situation);
   rpc CompterParEtat (Vide) returns (Comptes);
+  rpc Lister (Vide) returns (ListeSituations);
 }
 
 message Vide {}
@@ -22,3 +23,4 @@ message Situation {
   int64 last_transition_epoch = 4;
 }
 message Comptes { map<string, int32> par_etat = 1; }
+message ListeSituations { repeated Situation situations = 1; }
