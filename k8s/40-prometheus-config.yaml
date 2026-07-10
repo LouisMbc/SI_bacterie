@@ -15,3 +15,6 @@ data:
               - 'hypertrophie:8000'
               - 'atrophie:8000'
               - 'impasse:8000'
+      - job_name: 'state-manager'
+        static_configs:
+          - targets: ['state-manager:8000']
