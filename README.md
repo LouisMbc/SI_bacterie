@@ -121,12 +121,3 @@ webapp/           page web = client gRPC (Flask)
 k8s/              manifests Kubernetes
 perf/             test de charge Locust
 ```
-
-## 9. Limites connues
-
-- Pas de TLS sur les canaux gRPC (`insecure_channel`).
-- Redis sans volume persistant (emptyDir) : perte de données si le pod
-  Redis lui-même est supprimé.
-- Pas de readiness/liveness probes explicites.
-- Esthétique de la page web volontairement minimale, conformément à
-  l'énoncé.
