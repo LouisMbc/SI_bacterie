@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head><meta charset="utf-8"><title>Bactérie</title></head>
+<body>
+  <h1>Etat de la bactérie</h1>
+  <p>Etat courant : <strong id="etat">-</strong></p>
+  <p>Volume : <strong id="volume">-</strong> m3</p>
+  <h2>Transitions possibles</h2>
+  <div id="boutons"></div>
+<script>
+async function rafraichir() {
+  const res = await fetch('/api/etat');
+  const data = await res.json();
+  if (data.erreur) { document.getElementById('etat').innerText = 'ERREUR: ' + data.erreur; return; }
+  document.getElementById('etat').innerText = data.etat;
+  document.getElementById('volume').innerText = data.volume;
+  const zone = document.getElementById('boutons');
+  zone.innerHTML = '';
+  ['stable', 'hypertrophie', 'atrophie', 'impasse'].forEach(e => {
+    const btn = document.createElement('button');
+    btn.innerText = 'Aller vers ' + e;
+    btn.disabled = !data.etats_joignables.includes(e);
+    btn.onclick = () => transitionner(e);
+    zone.appendChild(btn);
+  });
+}
+async function transitionner(cible) {
+  const res = await fetch('/api/transition', {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({etat_cible: cible})
+  });
+  const data = await res.json();
+  if (data.erreur) { alert(data.erreur); }
+  rafraichir();
+}
+rafraichir();
+setInterval(rafraichir, 2000);
+</script>
+</body>
+</html>
