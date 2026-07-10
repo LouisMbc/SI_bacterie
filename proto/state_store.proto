@@ -1,0 +1,24 @@
+syntax = "proto3";
+package statestore;
+
+service StateStore {
+  rpc Lire (LireRequest) returns (Situation);
+  rpc Ecrire (EcrireRequest) returns (Situation);
+  rpc CompterParEtat (Vide) returns (Comptes);
+}
+
+message Vide {}
+message LireRequest { string bacterie_id = 1; }
+message EcrireRequest {
+  string bacterie_id = 1;
+  string etat = 2;
+  double volume = 3;
+  int64 last_transition_epoch = 4;
+}
+message Situation {
+  string bacterie_id = 1;
+  string etat = 2;
+  double volume = 3;
+  int64 last_transition_epoch = 4;
+}
+message Comptes { map<string, int32> par_etat = 1; }
