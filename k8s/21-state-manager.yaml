@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: state-manager
+  namespace: bacterie
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: state-manager}
+  template:
+    metadata:
+      labels: {app: state-manager}
+    spec:
+      containers:
+        - name: state-manager
+          image: bacterie-state-manager:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: REDIS_HOST, value: "redis"}
+            - {name: REDIS_PORT, value: "6379"}
+          ports:
+            - {containerPort: 9090, name: grpc}
+            - {containerPort: 8000, name: metrics}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: state-manager
+  namespace: bacterie
+spec:
+  selector: {app: state-manager}
+  ports:
+    - {name: grpc, port: 9090, targetPort: 9090}
+    - {name: metrics, port: 8000, targetPort: 8000}

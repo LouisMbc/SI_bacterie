@@ -20,6 +20,7 @@ spec:
             - {name: HYPERTROPHIE_ADDR, value: "hypertrophie:50051"}
             - {name: ATROPHIE_ADDR, value: "atrophie:50051"}
             - {name: IMPASSE_ADDR, value: "impasse:50051"}
+            - {name: STATE_MANAGER_ADDR, value: "state-manager:9090"}
           ports:
             - {containerPort: 5000}
 ---

@@ -1,4 +1,3 @@
-"""Page web de pilotage de la bactérie = client gRPC, sans règle métier."""
 import os
 import time
 import logging
@@ -23,8 +22,9 @@ ADRESSES_ETATS = {
     "impasse": os.environ.get("IMPASSE_ADDR", "localhost:50054"),
 }
 
-# Mémoire locale simple pour l'instant (une seule bactérie, un seul process).
-_memoire = {"etat": "stable", "volume": 1.0, "last_ts": int(time.time())}
+STATE_MANAGER_ADDR = os.environ.get("STATE_MANAGER_ADDR")
+
+_memoire_locale = {"etat": "stable", "volume": 1.0, "last_ts": int(time.time())}
 
 
 def _appeler_etat(nom_etat, volume, last_ts):
@@ -37,6 +37,21 @@ def _appeler_etat(nom_etat, volume, last_ts):
         )
 
 
+def _lire_situation():
+    if STATE_MANAGER_ADDR:
+        import state_client
+        return state_client.lire(STATE_MANAGER_ADDR, BACTERIE_ID)
+    return _memoire_locale["etat"], _memoire_locale["volume"], _memoire_locale["last_ts"]
+
+
+def _ecrire_situation(etat, volume, last_ts):
+    if STATE_MANAGER_ADDR:
+        import state_client
+        state_client.ecrire(STATE_MANAGER_ADDR, BACTERIE_ID, etat, volume, last_ts)
+    else:
+        _memoire_locale.update(etat=etat, volume=volume, last_ts=last_ts)
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -44,31 +59,30 @@ def index():
 
 @app.route("/api/etat")
 def api_etat():
-    etat = _memoire["etat"]
+    etat, volume, last_ts = _lire_situation()
     try:
-        rep = _appeler_etat(etat, _memoire["volume"], _memoire["last_ts"])
+        rep = _appeler_etat(etat, volume, last_ts)
     except grpc.RpcError as e:
         return jsonify(erreur=f"pod '{etat}' injoignable: {e.details()}"), 503
 
-    _memoire["volume"] = rep.volume
-    _memoire["last_ts"] = rep.last_transition_epoch
+    _ecrire_situation(etat, rep.volume, rep.last_transition_epoch)
     return jsonify(etat=etat, volume=round(rep.volume, 5), etats_joignables=list(rep.etats_joignables))
 
 
 @app.route("/api/transition", methods=["POST"])
 def api_transition():
     cible = request.json.get("etat_cible")
+    etat, volume, last_ts = _lire_situation()
+
     if cible not in ADRESSES_ETATS:
         return jsonify(erreur="état cible inconnu"), 400
 
-    rep_courant = _appeler_etat(_memoire["etat"], _memoire["volume"], _memoire["last_ts"])
+    rep_courant = _appeler_etat(etat, volume, last_ts)
     if cible not in rep_courant.etats_joignables:
-        return jsonify(erreur=f"transition '{_memoire['etat']}' -> '{cible}' interdite"), 409
+        return jsonify(erreur=f"transition '{etat}' -> '{cible}' interdite"), 409
 
     rep_cible = _appeler_etat(cible, rep_courant.volume, rep_courant.last_transition_epoch)
-    _memoire["etat"] = cible
-    _memoire["volume"] = rep_cible.volume
-    _memoire["last_ts"] = rep_cible.last_transition_epoch
+    _ecrire_situation(cible, rep_cible.volume, rep_cible.last_transition_epoch)
 
     return jsonify(etat=cible, volume=round(rep_cible.volume, 5), etats_joignables=list(rep_cible.etats_joignables))
 

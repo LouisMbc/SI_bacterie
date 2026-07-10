@@ -1,0 +1,4 @@
+grpcio==1.82.1
+protobuf==7.35.1
+prometheus_client==0.21.0
+redis==5.0.8
