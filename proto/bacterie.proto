@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package bacterie;
+
+service EtatBacterie {
+  rpc Entrer (BacterieRequest) returns (BacterieResponse);
+}
+
+message BacterieRequest {
+  string id = 1;
+  double volume = 2;
+  int64 last_transition_epoch = 3;
+}
+
+message BacterieResponse {
+  double volume = 1;
+  repeated string etats_joignables = 2;
+  int64 last_transition_epoch = 3;
+  string etat = 4;
+}
