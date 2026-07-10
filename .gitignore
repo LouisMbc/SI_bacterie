@@ -1,0 +1,13 @@
+# environnement virtuel Python
+venv/
+
+# fichiers Python compilés
+__pycache__/
+*.pyc
+
+# résultats de tests de perf (générés, pas du code source)
+perf/resultats*
+
+# éventuels fichiers d'IDE
+.vscode/
+.idea/
